@@ -1,6 +1,6 @@
 var calendar_target = CalendarApp.getCalendarById(TARGET_ID);
 var calendar_source = CalendarApp.getCalendarById(SOURCE_ID);
-const createdbyMsg = "created_by_AppScript" 
+const createdbyMsg = "[created_by_AppScript]" 
 
 /**
  * カレンダーから指定期間内にあるイベントを取得する
@@ -47,10 +47,14 @@ function copyEventsForDay(from_calendar, to_calendar, start_date, days) {
  * @param {*} days 
  */
 function deleteEventsForDay(calendar, start_date, days) {
-  // var events = getEventsForDays(calendar, start_date, days);
-  // events.forEach(function(e) {
-  //   e.deleteEvent();
-  // });
+  var events = getEventsForDays(calendar, start_date, days);
+  events.forEach(function(e) {
+    // スクリプトで作成された以外は削除を実行しない
+    if(e.getDescription().indexOf(createdbyMsg) == -1) return;
+
+    e.deleteEvent();
+    console.log("this event is deleted:", e.getTitle());
+  });
 }
 
 /**
@@ -59,7 +63,7 @@ function deleteEventsForDay(calendar, start_date, days) {
  * @param {*} days 
  */
 function syncEventsForDay(start_date, days) {
-  // deleteEventsForDay(calendar_shared, start_date, days);
+  deleteEventsForDay(calendar_target, start_date, days);
   copyEventsForDay(calendar_source, calendar_target, start_date, days);
 }
 
@@ -90,7 +94,7 @@ function syncEventsAfter2To14Days() {
 }
 
 /**
- * 明後日から2週間後の予定を同期する
+ * 2週間後から2か月後の予定を同期する
  */
 function syncEventsAfter15To60Days() {
   var today = new Date();
