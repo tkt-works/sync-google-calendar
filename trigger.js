@@ -1,9 +1,9 @@
 function resetTrigger() {
   deleteTrigger();
-  createTriggerEveryMinutes("syncEventsForToday", 15); // 毎日の予定を15分おきに同期
-  createTriggerEveryHours("syncEventsForTommorow", 2); // 明日の予定を2時間おきに同期
-  createTriggerEveryDays("syncEventsAfter2To14Days", 1); // 明後日から2週間後の予定を1日おきに同期
-  createTriggerEveryWeeks("syncEventsAfter15To60Days", 1); // 2週間後から2か月後の予定を1週間おきに同期
+  createTriggerEveryMinutes("syncEventsToday", 15); // 毎日の予定を15分おきに同期
+  createTriggerEveryHours("syncEventsTommorow", 2); // 明日の予定を2時間おきに同期
+  createTriggerEveryDays("syncEvents2Weeks", 1); // 明後日から2週間後の予定を1日おきに同期
+  createTriggerEveryWeeks("syncEvents2Months", 1); // 2週間後から2か月後の予定を1週間おきに同期
 }
 
 function createTriggerEveryMinutes(funcName, minutes) {

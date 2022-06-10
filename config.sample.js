@@ -1,2 +1,2 @@
-// const SOURCE_ID = "xxxxxxxxxxxxxxxxxxx"
-// const TARGET_ID = "yyyyyyyyyyyyyyyyyyy"
+const SOURCE_ID = "xxxxxxxxxxxxxxxxxxx"
+const TARGET_ID = "yyyyyyyyyyyyyyyyyyy"
