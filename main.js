@@ -31,12 +31,17 @@ function getEventsForDays(calendar, startDate, days) {
 function copyEventsForDay(sourceCalendar, targetCalendar, startDate, days) {
   var events = getEventsForDays(sourceCalendar, startDate, days);
   events.forEach(function(e) {
-    var description = `${e.getDescription()}\n\n${deleteTargetMsg}`;
+    // 予定がこのスクリプトで作られたものならばスキップする。無限増殖しちゃうので
+    if(e.getDescription().indexOf(deleteTargetMsg) !== -1) return;
+
+    var title = HIDE_TITLE ? "予定あり" : e.getTitle();
+    var description = HIDE_INFO ? deleteTargetMsg : `${e.getDescription()}\n\n${deleteTargetMsg}`;
+    var location = HIDE_INFO ? "" : e.getLocation();
 
     if (e.isAllDayEvent()) {
-      targetCalendar.createAllDayEvent(e.getTitle(), e.getStartTime(), {description: description, location: e.getLocation()});
+      targetCalendar.createAllDayEvent(title, e.getStartTime(), {description: description, location: location});
     } else {
-      targetCalendar.createEvent(e.getTitle(), e.getStartTime(), e.getEndTime(), {description: description, location: e.getLocation()});
+      targetCalendar.createEvent(title, e.getStartTime(), e.getEndTime(), {description: description, location: location});
     }
   });
 }
@@ -73,7 +78,7 @@ function syncEventsForDay(startDate, days = 1) {
  */
 function syncEventsToday() {
   var today = new Date();
-  syncEventsForDay(today);
+  syncEventsForDay(today, 1);
 }
 
 /**
@@ -82,7 +87,7 @@ function syncEventsToday() {
 function syncEventsTommorow() {
   var today = new Date();
   var tomorrow = new Date(today.getTime() + (1 * 24 * 60 * 60 * 1000));
-  syncEventsForDay(tomorrow);
+  syncEventsForDay(tomorrow, 1);
 }
 
 /**
