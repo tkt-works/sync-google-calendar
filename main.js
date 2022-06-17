@@ -32,7 +32,13 @@ function copyEventsForDay(sourceCalendar, targetCalendar, startDate, days) {
   var events = getEventsForDays(sourceCalendar, startDate, days);
   events.forEach(function(e) {
     // 予定がこのスクリプトで作られたものならばスキップする。無限増殖しちゃうので
-    if(e.getDescription().indexOf(deleteTargetMsg) !== -1) return;
+    /**
+     * 1. 普通のイベント、普通に動かしたい　→　false , true：希望はreturnしない
+     * 2. asイベント、普通に動かしたい　→　true , true：希望はreturnする
+     * 3. 普通のイベント、tmpで動かしたい　→　false , false：希望はreturnする
+     * 4. asイベント、tmpで動かしたい　→　true , false：希望はreturしない
+     */
+    if((e.getDescription().indexOf(deleteTargetMsg) !== -1) === !only_created_by_appscript) return;
 
     var title = HIDE_TITLE ? "予定あり" : e.getTitle();
     var description = HIDE_INFO ? deleteTargetMsg : `${e.getDescription()}\n\n${deleteTargetMsg}`;
